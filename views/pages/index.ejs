@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+  </head>
+  <body class="container">
+    <header><%- include('../partials/header'); %></header>
+
+    <main>
+      <div class="jumbotron mt-5">
+        <form>
+          <div class="form-group">
+            <label for="countries">Select Country</label>
+            <select name="countries" id="countries" class="form-group">
+              <option value="-" />
+              <% for(var i = 0; i < countries.length; i++) { %>
+                <option value="<%= countries[i] %>"><%= countries[i] %></option>
+              <% } %>
+            </select>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <footer><%- include('../partials/footer'); %></footer>
+
+    <script>
+      document.getElementById('countries').addEventListener('change', function () {
+        const selectedCountry = document.getElementById('countries').value;
+        if(selectedCountry != '-') window.location.replace('/' + selectedCountry);
+        
+      });
+    </script>
+    
+  </body>
+</html>

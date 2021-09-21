@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+  </head>
+  <body class="container">
+    <header><%- include('../partials/header'); %></header>
+
+    <main>
+      <div class="jumbotron mt-5" id="mainChart">
+        <div class="row" style="height: 50vh;">
+          <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 pe-5">
+            <form>
+              <div class="form-group">
+                <label for="countries">Select Country</label>
+                <select name="countries" id="countries" class="form-group">
+                  <option value="-" />
+                  <% for(var i = 0; i < countries.length; i++) { %>
+                    <option value="<%= countries[i] %>"><%= countries[i] %></option>
+                  <% } %>
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
+            <canvas id="chart" style="width: 100%; height: 70%"></canvas>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer><%- include('../partials/footer'); %></footer>
+
+    <script>
+      $(function () {
+        $(".multi-select").select2({
+          placeholder: "select country", //placeholder
+          tags: true,
+          tokenSeparators: ['/',',',';'," "] 
+        });
+      });
+    </script>
+
+    <script>
+      document.getElementById('countries').addEventListener('change', function () {
+        const selectedCountry = document.getElementById('countries').value;
+        if(selectedCountry != '-') window.location.replace('/' + selectedCountry);
+        
+      });
+    </script>
+
+    <script>
+
+      let labels = '<%= chartData.labels %>';
+	  labels = labels.split(',');
+
+	  let dataPoints = '<%= chartData.data %>';
+	  dataPoints = dataPoints.split(',');
+      const data = {
+        labels: labels,
+        datasets: [{
+          label: '<%= country %>',
+          backgroundColor: 'rgb(255, 99, 132)',
+          borderColor: 'rgb(255, 99, 132)',
+          data: dataPoints,
+        }]
+      };
+
+      const config = {
+        type: "line",
+        data: data,
+        options: {
+          plugins: {
+            zoom: {
+              zoom: {
+                wheel: {
+                  enabled: true,
+                },
+                pinch: {
+                  enabled: true
+                },
+                mode: 'x',
+                drag: {
+                  enabled: true
+                }
+              }
+            }
+          }
+        },
+      };
+
+      var myChart = new Chart(document.getElementById("chart"), config);
+    </script>
+
+  </body>
+</html>
