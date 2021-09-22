@@ -3,12 +3,19 @@ const express = require('express');
 const app = express();
 const _ = require('lodash');
 const CronJob = require('cron').CronJob;
+const helmet = require('helmet');
+const compression = require('compression');
+const cors = require('cors');
 
 app.set('view engine', 'ejs');
 
 app.use(express.json());
 app.use(express.static('views'));
 app.use('/scripts', express.static(__dirname + '/node_modules/chartjs-plugin-zoom/dist/'));
+app.use(helmet());
+app.use(compression());
+app.use(cors());
+
 
 // GLOBAL VARIABLES
 let countries = [];
