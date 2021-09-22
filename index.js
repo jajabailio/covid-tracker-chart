@@ -5,7 +5,6 @@ const _ = require('lodash');
 const CronJob = require('cron').CronJob;
 const compression = require('compression');
 const cors = require('cors');
-const redis = require('redis');
 
 app.set('view engine', 'ejs');
 
@@ -15,10 +14,6 @@ app.use('/scripts', express.static(__dirname + '/node_modules/chartjs-plugin-zoo
 app.use(compression());
 app.use(cors());
 
-const REDIS_PORT = process.env.REDIS_PORT || 6379;
-const client = redis.createClient('127.0.0.1', REDIS_PORT);
-
-const cache = require('./middleware/cache');
 // GLOBAL VARIABLES
 let countries = [];
 let serveCountries = [];
@@ -35,10 +30,8 @@ app.get('/', (req, res) => {
 	});
 });
 
-app.get('/chart/:country', cache, async (req, res) => {
+app.get('/chart/:country', async (req, res) => {
 	const country = req.params.country;
-
-	client.setex(country, 5000, JSON.stringify(globalData[country]));
 
 	res.render('pages/chart', {
 		chartData: globalData[country],
