@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+  </head>
+  <body class="container">
+    <header><%- include('../partials/header'); %></header>
+
+    <main>
+      <div class="jumbotron mt-5 px-5">
+        <table class="table table-responsive table-hover table-striped table-bordered">
+			<thead class="bg-primary text-light">
+				<th>Country</th>
+				<th>R</th>
+				<th>Date</th>
+			</thead>
+			<tbody>
+				<% if(data) { %>
+					<% for(var i = 0; i < data.length; i++) { %>
+						<tr>
+							<td><%= data[i].name %></td>
+							<td><%= data[i].latestR %></td>
+							<td><%= data[i].date %></td>
+						</tr>
+					<% }%>
+				<% } else { %>
+					<tr>
+						<td colspan="3">Data loading. Refresh page to reload data.</td>
+					</tr>
+				<% }%>
+			</tbody>
+		</table>
+      </div>
+    </main>
+
+    <footer><%- include('../partials/footer'); %></footer>
+  </body>
+</html>
