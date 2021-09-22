@@ -3,7 +3,6 @@ const express = require('express');
 const app = express();
 const _ = require('lodash');
 const CronJob = require('cron').CronJob;
-const helmet = require('helmet');
 const compression = require('compression');
 const cors = require('cors');
 
@@ -12,7 +11,6 @@ app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.static('views'));
 app.use('/scripts', express.static(__dirname + '/node_modules/chartjs-plugin-zoom/dist/'));
-app.use(helmet());
 app.use(compression());
 app.use(cors());
 
@@ -26,7 +24,13 @@ let currentlyFetching = false;
 const localCSVData = require('./methods/fetchLocalData');		// use this method to test fetching csv locally
 const parseCsvData = require('./methods/parseData');			// parse csv from url
 
-app.get('/:country', async (req, res) => {
+app.get('/', (req, res) => {
+	res.render('pages/index', {
+		countries: serveCountries
+	});
+});
+
+app.get('/chart/:country', async (req, res) => {
 	const country = req.params.country;
 
 	res.render('pages/chart', {
@@ -36,16 +40,11 @@ app.get('/:country', async (req, res) => {
 	})
 });
 
-app.get('/', (req, res) => {
-	res.render('pages/index', {
-		countries: serveCountries
-	});
-});
 
-// this route is to see the globalData (parsed data)
 app.get('/see/test', (req, res) => {
 	res.send(globalData);
 })
+// this route is to see the globalData (parsed data)
 
 const job = new CronJob('0 0 0 * * *', function() {
   // run every midnight
