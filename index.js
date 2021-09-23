@@ -51,7 +51,7 @@ app.get('/asean', (req, res) => {
 });
 // this route is to see the globalData (parsed data)
 
-const job = new CronJob('0 0 0 * * *', function() {
+const job = new CronJob('0 0 * * * *', function() {
   // run every midnight
   parseCsvData()
 	.then(result => {
