@@ -28,26 +28,18 @@ module.exports = async function () {
 			const country = row[0];
 			const dataDate = [row[1]];
 			
-			if(countries[countries.length - 1] !== country && !countries.includes(country)) {
-				globalData[country] = { labels: [], data: [], dataObj: {} };
-				countries.push(country);
-
-				globalData[country].labels.push(moment(new Date (dataDate)).format('MMM DD YYYY'));
-				globalData[country].data.push(Math.round(parseFloat(row[2])  * 100) / 100 );
-				globalData[country].dataObj[dataDate] = row[2];
-			} else if(countries[countries.length - 1] !== country && countries.includes(country)) {
-				// do nothing
-				// this is to ignore the second instance of the same country in the csv
-			} else {
-				globalData[country].labels.push(moment(new Date (dataDate)).format('MMM DD YYYY'));
-				globalData[country].data.push(Math.round(parseFloat(row[2])  * 100) / 100 );
-				globalData[country].dataObj[dataDate] = row[2];
-			}
+			if(countries[countries.length - 1] !== country && !countries.includes(country)) countries.push(country);
 
 			// if country is next, get previous country's last row
 			if(previousCountry !== country && previousCountry !== '' && !storedAseanCountries.includes(previousCountry)) {
+				const previousRow = rows[idx - 1].split(',');
+				globalData[previousCountry] = {
+					name: previousCountry,
+					latestR: Math.round(parseFloat(previousRow[2])  * 100) / 100 ,
+					date: moment(new Date (previousRow[1])).format('MMMM DD, YYYY')
+				};
+
 				if(aseanList.includes(previousCountry)) {
-					const previousRow = rows[idx - 1].split(',');
 					storedAseanCountries.push(previousCountry);
 					aseanData.push({
 						name: previousCountry,

@@ -5,71 +5,9 @@
   </head>
   <body class="container-fluid">
     <main>
-      <div class="jumbotron mt-5" id="mainChart">
-        <div class="row" style="height: 70vh;">
-          <div class="col-12">
-            <canvas id="chart" style="width: 100%; height: 70%"></canvas>
-          </div>
-        </div>
-      </div>
+      <p class="fs-3"><%= chartData.latestR %></p>
+      
     </main>
-
-
-    <script>
-      $(function () {
-        $(".multi-select").select2({
-          placeholder: "select country", //placeholder
-          tags: true,
-          tokenSeparators: ['/',',',';'," "] 
-        });
-      });
-    </script>
-
-    <script>
-
-      let labels = '<%= chartData.labels %>';
-	  labels = labels.split(',');
-
-	  let dataPoints = '<%= chartData.data %>';
-	  dataPoints = dataPoints.split(',');
-      const data = {
-        labels: labels,
-        datasets: [{
-          label: '<%= country %>',
-          backgroundColor: 'rgb(255, 99, 132)',
-          borderColor: 'rgb(255, 99, 132)',
-          data: dataPoints,
-        }]
-      };
-
-      const config = {
-        type: "line",
-        data: data,
-        options: {
-          plugins: {
-            legend: {
-              display: false
-            },
-            zoom: {
-              zoom: {
-                wheel: {
-                  enabled: true,
-                },
-                pinch: {
-                  enabled: true
-                },
-                mode: 'x',
-                drag: {
-                  enabled: true
-                }
-              }
-            }
-          }
-        },
-      };
-
-      var myChart = new Chart(document.getElementById("chart"), config);
-    </script>
 
   </body>
 </html>
