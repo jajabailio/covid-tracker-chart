@@ -32,11 +32,7 @@ app.get('/', (req, res) => {
 
 app.get('/chart/:country', async (req, res) => {
 	const country = req.params.country;
-
-	res.render('pages/chart', {
-		chartData: globalData[country],
-		country,
-	})
+	res.json(globalData[country].latestR);
 });
 
 
