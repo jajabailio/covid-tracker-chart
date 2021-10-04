@@ -30,11 +30,10 @@ app.get('/', (req, res) => {
 	});
 });
 
-app.get('/chart/:country', async (req, res) => {
+app.get('/:country', async (req, res) => {
 	const country = req.params.country;
 	res.json(globalData[country].latestR);
 });
-
 
 app.get('/see/test', (req, res) => {
 	res.send(globalData);
